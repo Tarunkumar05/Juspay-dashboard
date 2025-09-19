@@ -5,6 +5,7 @@ import {
   Avatar,
   Dropdown,
   Typography,
+  Input,
 } from 'antd';
 import {
   MenuFoldOutlined,
@@ -15,9 +16,12 @@ import {
   UserOutlined,
 } from '@ant-design/icons';
 import React from 'react';
+import CustomIcons from '../CustomIcons/CustomIcons';
+// import Search from 'antd/es/transfer/search';
 
 const { Header } = Layout;
 const { Title } = Typography;
+const { Search } = Input;
 
 interface NavBarProps {
     leftCollapsed : boolean;
@@ -79,7 +83,13 @@ const Navbar: React.FC<NavBarProps> = ({leftCollapsed, rightCollapsed, onRightTo
           </div>
 
           <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
-            <Button type="text" icon={<SearchOutlined />} />
+             <Search
+              placeholder="Search"
+              style={{ width: 200 }}
+              prefix={<SearchOutlined />}
+            />
+             
+           <CustomIcons.Clock width={24} height={24} style={{ cursor: 'pointer' }} />
             
             <Dropdown menu={notificationMenu} placement="bottomRight">
               <Button type="text" icon={<Badge count={3} size="small"><BellOutlined /></Badge>} />
