@@ -1,19 +1,24 @@
-import Dashboard from "./pages/Dashboard/Dashboard"
+import type React from "react";
+import { BrowserRouter as Router, Route,  Routes } from "react-router-dom";
 
+import Dashboard from "./pages/Dashboard/Dashboard";
+import OrderList from "./pages/OrderList/OrderList";
+import Layout from "./components/Layout/Layout";
 
-function App() {
-
+const App: React.FC = () => {
   return (
-    <>
-    <Dashboard/>
+    <Router>
+      <Routes>
+        <Route path="/" element={<Layout />}>
+          <Route index element={<Dashboard />} />
+          <Route path="orders" element={<OrderList />} />
+        </Route>
+      </Routes>
+    </Router>
+  );
+};
 
-    </>
-  )
-}
-
-export default App
-
-
+export default App;
 
 // import { Button } from "antd";
 
@@ -28,4 +33,3 @@ export default App
 // }
 
 // export default App;
-

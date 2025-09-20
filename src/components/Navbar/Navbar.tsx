@@ -1,3 +1,5 @@
+import React from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
 import {
   Layout,
   Button,
@@ -15,20 +17,36 @@ import {
   BugOutlined,
   UserOutlined,
 } from '@ant-design/icons';
-import React from 'react';
 import CustomIcons from '../CustomIcons/CustomIcons';
-// import Search from 'antd/es/transfer/search';
 
 const { Header } = Layout;
 const { Title } = Typography;
 const { Search } = Input;
 
 interface NavBarProps {
-    leftCollapsed : boolean;
-    rightCollapsed: boolean;
-    onLeftToggle: () => void;
-    onRightToggle: () => void;
+  leftCollapsed: boolean;
+  rightCollapsed: boolean;
+  onLeftToggle: () => void;
+  onRightToggle: () => void;
 }
+
+const Navbar: React.FC<NavBarProps> = ({
+  leftCollapsed,
+  rightCollapsed,
+  onRightToggle,
+  onLeftToggle
+}) => {
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  const handleClockClick = () => {
+    // Toggle between dashboard and orders page
+    if (location.pathname === '/') {
+      navigate('/orders');
+    } else {
+      navigate('/');
+    }
+  };
 
   const notificationMenu = {
     items: [
@@ -50,7 +68,6 @@ interface NavBarProps {
     ],
   };
 
-  // User dropdown menu
   const userMenu = {
     items: [
       { key: '1', label: 'Profile' },
@@ -59,53 +76,62 @@ interface NavBarProps {
     ],
   };
 
-const Navbar: React.FC<NavBarProps> = ({leftCollapsed, rightCollapsed, onRightToggle, onLeftToggle}) => {
+  // Get current page title
+  const getPageTitle = () => {
+    if (location.pathname === '/orders') {
+      return 'Order List';
+    }
+    return 'Dashboard';
+  };
 
-
-    
   return (
-        <Header style={{
-          background: '#fff',
-          padding: '0 16px',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-          boxShadow: '0 2px 6px rgba(0,21,41,.08)',
-          zIndex: 1000
-        }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
-            <Button
-              type="text"
-              icon={leftCollapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
-              onClick={onLeftToggle}
-            />
-            <Title  level={4} style={{ margin: 0 }}>Dashboard</Title>
-          </div>
+    <Header style={{
+      background: '#fff',
+      padding: '0 16px',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'space-between',
+      boxShadow: '0 2px 6px rgba(0,21,41,.08)',
+      zIndex: 1000
+    }}>
+      <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
+        <Button
+          type="text"
+          icon={leftCollapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
+          onClick={onLeftToggle}
+        />
+        <Title level={4} style={{ margin: 0 }}>{getPageTitle()}</Title>
+      </div>
 
-          <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
-             <Search
-              placeholder="Search"
-              style={{ width: 200 }}
-              prefix={<SearchOutlined />}
-            />
-             
-           <CustomIcons.Clock width={24} height={24} style={{ cursor: 'pointer' }} />
-            
-            <Dropdown menu={notificationMenu} placement="bottomRight">
-              <Button type="text" icon={<Badge count={3} size="small"><BellOutlined /></Badge>} />
-            </Dropdown>
+      <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
+        <Search
+          placeholder="Search"
+          style={{ width: 200 }}
+          prefix={<SearchOutlined />}
+        />
 
-            <Dropdown menu={userMenu} placement="bottomRight">
-              <Avatar src="https://api.dicebear.com/7.x/miniavs/svg?seed=user" />
-            </Dropdown>
+        <CustomIcons.Clock
+          width={24}
+          height={24}
+          style={{ cursor: 'pointer' }}
+          onClick={handleClockClick}
+        />
 
-            <Button
-              type="text"
-              icon={rightCollapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
-              onClick={onRightToggle}
-            />
-          </div>
-        </Header>
+        <Dropdown menu={notificationMenu} placement="bottomRight">
+          <Button type="text" icon={<Badge count={3} size="small"><BellOutlined /></Badge>} />
+        </Dropdown>
+
+        <Dropdown menu={userMenu} placement="bottomRight">
+          <Avatar src="https://api.dicebear.com/7.x/miniavs/svg?seed=user" />
+        </Dropdown>
+
+        <Button
+          type="text"
+          icon={rightCollapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
+          onClick={onRightToggle}
+        />
+      </div>
+    </Header>
   );
 };
 

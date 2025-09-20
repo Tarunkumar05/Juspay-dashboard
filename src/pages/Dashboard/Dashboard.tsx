@@ -1,4 +1,4 @@
-import { useState } from "react";
+
 import {
   Layout,
   Card,
@@ -11,9 +11,7 @@ import {
   Space,
 } from "antd";
 
-import MainSider from "../../components/MainSider/MainSider";
-import Navbar from "../../components/Navbar/Navbar";
-import RightSider from "../../components/RightSider/RightSider";
+
 import { Bar, Line } from "react-chartjs-2";
 
 import {
@@ -112,8 +110,7 @@ const options = {
 };
 
 const Dashboard = () => {
-  const [leftCollapsed, setLeftCollapsed] = useState(false);
-  const [rightCollapsed, setRightCollapsed] = useState(false);
+
 
   const revenueData = [
     {
@@ -171,22 +168,7 @@ const Dashboard = () => {
   // Notification dropdown menu
 
   return (
-    <Layout style={{ minHeight: "100vh" }}>
-      {/* Left Sidebar */}
-      <MainSider collapsed={leftCollapsed} />
 
-      <Layout>
-        {/* Header */}
-
-        <Navbar
-          leftCollapsed={leftCollapsed}
-          rightCollapsed={rightCollapsed}
-          onLeftToggle={() => setLeftCollapsed(!leftCollapsed)}
-          onRightToggle={() => setRightCollapsed(!rightCollapsed)}
-        />
-
-        <Layout>
-          {/* Main Content */}
           <Content
             style={{
               margin: "16px",
@@ -537,12 +519,9 @@ const Dashboard = () => {
               </Col>
             </Row>
           </Content>
-        </Layout>
-      </Layout>
 
-      {/* Right Sidebar */}
-      <RightSider collapsed={rightCollapsed} />
-    </Layout>
+
+
   );
 };
 
