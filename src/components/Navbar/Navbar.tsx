@@ -1,23 +1,16 @@
-import React from 'react';
-import { useNavigate, useLocation } from 'react-router-dom';
-import {
-  Layout,
-  Button,
-  Badge,
-  Avatar,
-  Dropdown,
-  Typography,
-  Input,
-} from 'antd';
+// components/Navbar/Navbar.tsx
+import React from "react";
+import { useNavigate, useLocation } from "react-router-dom";
+import { Layout, Button, Avatar, Dropdown, Typography, Input } from "antd";
 import {
   MenuFoldOutlined,
   MenuUnfoldOutlined,
-  BellOutlined,
   SearchOutlined,
   BugOutlined,
   UserOutlined,
-} from '@ant-design/icons';
-import CustomIcons from '../CustomIcons/CustomIcons';
+} from "@ant-design/icons";
+import CustomIcons from "../CustomIcons/CustomIcons";
+import { useTheme } from "../../contexts/ThemeContext";
 
 const { Header } = Layout;
 const { Title } = Typography;
@@ -34,101 +27,175 @@ const Navbar: React.FC<NavBarProps> = ({
   leftCollapsed,
   rightCollapsed,
   onRightToggle,
-  onLeftToggle
+  onLeftToggle,
 }) => {
   const navigate = useNavigate();
   const location = useLocation();
+  const { theme, toggleTheme } = useTheme();
 
   const handleClockClick = () => {
     // Toggle between dashboard and orders page
-    if (location.pathname === '/') {
-      navigate('/orders');
+    if (location.pathname === "/") {
+      navigate("/orders");
     } else {
-      navigate('/');
+      navigate("/");
     }
+  };
+
+  const handleThemeToggle = () => {
+    toggleTheme();
   };
 
   const notificationMenu = {
     items: [
       {
-        key: '1',
-        label: 'You have a bug that needs...',
-        icon: <BugOutlined style={{ color: '#ff4d4f' }} />,
+        key: "1",
+        label: "You have a bug that needs...",
+        icon: <BugOutlined style={{ color: "#ff4d4f" }} />,
       },
       {
-        key: '2',
-        label: 'New user registered',
-        icon: <UserOutlined style={{ color: '#52c41a' }} />,
+        key: "2",
+        label: "New user registered",
+        icon: <UserOutlined style={{ color: "#52c41a" }} />,
       },
       {
-        key: '3',
-        label: 'Andi Lane subscribed to you',
-        icon: <UserOutlined style={{ color: '#1890ff' }} />,
+        key: "3",
+        label: "Andi Lane subscribed to you",
+        icon: <UserOutlined style={{ color: "#1890ff" }} />,
       },
-    ],
-  };
-
-  const userMenu = {
-    items: [
-      { key: '1', label: 'Profile' },
-      { key: '2', label: 'Settings' },
-      { key: '3', label: 'Logout' },
     ],
   };
 
   // Get current page title
   const getPageTitle = () => {
-    if (location.pathname === '/orders') {
-      return 'Order List';
+    if (location.pathname === "/orders") {
+      return "Order List";
     }
-    return 'Dashboard';
+    return "Dashboard";
   };
 
   return (
-    <Header style={{
-      background: '#fff',
-      padding: '0 16px',
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'space-between',
-      boxShadow: '0 2px 6px rgba(0,21,41,.08)',
-      zIndex: 1000
-    }}>
-      <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
+    <Header
+      style={{
+        background: theme === "dark" ? "var(--color-bg-primary)" : "#fff",
+        padding: "0 16px",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "space-between",
+        boxShadow:
+          theme === "dark" ? "var(--shadow-md)" : "0 2px 6px rgba(0,21,41,.08)",
+        zIndex: 1000,
+        borderBottom: `1px solid ${
+          theme === "dark" ? "var(--color-border-secondary)" : "#f0f0f0"
+        }`,
+      }}
+    >
+      <div style={{ display: "flex", alignItems: "center", gap: "16px" }}>
         <Button
           type="text"
           icon={leftCollapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
           onClick={onLeftToggle}
+          style={{
+            color: theme === "dark" ? "var(--color-text-primary)" : undefined,
+          }}
         />
-        <Title level={4} style={{ margin: 0 }}>{getPageTitle()}</Title>
+        {theme === "dark" ? <CustomIcons.LightStar/> : <CustomIcons.DarkStar/>}
+
+        <Title
+          level={4}
+          style={{
+            margin: 0,
+            color: theme === "dark" ? "var(--color-text-primary)" : undefined,
+          }}
+        >
+          {getPageTitle()}
+        </Title>
       </div>
 
-      <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
+      <div style={{ display: "flex", alignItems: "center", gap: "16px" }}>
         <Search
           placeholder="Search"
           style={{ width: 200 }}
           prefix={<SearchOutlined />}
         />
 
-        <CustomIcons.Clock
-          width={24}
-          height={24}
-          style={{ cursor: 'pointer' }}
-          onClick={handleClockClick}
-        />
+        {/* Theme Toggle - Show Sun icon in dark mode, Moon icon in light mode */}
+        {theme === "dark" ? (
+          <CustomIcons.Moon
+            width={24}
+            height={24}
+            style={{ cursor: "pointer" }}
+            onClick={handleThemeToggle}
+          />
+        ) : (
+          <CustomIcons.Sun
+            width={24}
+            height={24}
+            style={{ cursor: "pointer" }}
+            onClick={handleThemeToggle}
+          />
+        )}
+
+        {theme === "dark" ? (
+          <CustomIcons.LightClock
+            width={24}
+            height={24}
+            style={{
+              cursor: "pointer",
+            }}
+            onClick={handleClockClick}
+          />
+        ) : (
+          <CustomIcons.Clock
+            width={24}
+            height={24}
+            style={{
+              cursor: "pointer",
+            }}
+            onClick={handleClockClick}
+          />
+        )}
 
         <Dropdown menu={notificationMenu} placement="bottomRight">
-          <Button type="text" icon={<Badge count={3} size="small"><BellOutlined /></Badge>} />
+          {theme === "dark" ? (
+            <CustomIcons.LightNotification
+              width={24}
+              height={24}
+              style={{
+                cursor: "pointer",
+              }}
+            />
+          ) : (
+            <CustomIcons.Notification
+              width={24}
+              height={24}
+              style={{
+                cursor: "pointer",
+              }}
+            />
+          )}
         </Dropdown>
 
-        <Dropdown menu={userMenu} placement="bottomRight">
           <Avatar src="https://api.dicebear.com/7.x/miniavs/svg?seed=user" />
-        </Dropdown>
+
+
+        <CustomIcons.Toggle
+          width={24}
+          height={24}
+          style={{
+            cursor: "pointer",
+            color: theme === "dark" ? "var(--color-text-primary)" : undefined,
+          }}
+          onClick={onRightToggle}
+        />
 
         <Button
           type="text"
           icon={rightCollapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
           onClick={onRightToggle}
+          style={{
+            color: theme === "dark" ? "var(--color-text-primary)" : undefined,
+          }}
         />
       </div>
     </Header>

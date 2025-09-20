@@ -1,16 +1,11 @@
 import Sider from "antd/es/layout/Sider";
-import {
-  DashboardOutlined,
-  UserOutlined,
-  TeamOutlined,
-  SettingOutlined,
-  FileOutlined,
-  ProjectOutlined,
-  ShoppingOutlined,
-} from "@ant-design/icons";
+import { DashboardOutlined, ProjectOutlined } from "@ant-design/icons";
 
-import { Menu, Avatar, Typography } from "antd";
+import { Dropdown, Menu, Typography } from "antd";
 import React from "react";
+import "./MainSider.scss";
+import CustomIcons from "../CustomIcons/CustomIcons";
+import "../../styles/themes/_light.scss";
 
 const { Text } = Typography;
 
@@ -18,7 +13,7 @@ interface MainSiderProps {
   collapsed: boolean;
 }
 
-const menuItems = [
+const favoritesItems = [
   {
     key: "overview",
     icon: <DashboardOutlined />,
@@ -29,165 +24,154 @@ const menuItems = [
     icon: <ProjectOutlined />,
     label: "Projects",
   },
+];
+
+const dashboardItems = [
+  {
+    key: "default",
+    icon: <CustomIcons.Default width={20} height={20} />,
+    label: "Default",
+  },
   {
     key: "ecommerce",
-    icon: <ShoppingOutlined />,
+    icon: <CustomIcons.ShoppingBag width={20} height={20} />,
     label: "eCommerce",
-    children: [
-      { key: "customers", label: "Customers" },
-      { key: "orders", label: "Orders" },
-      { key: "products", label: "Products" },
-    ],
+  },
+  {
+    key: "projects-dashboard",
+    icon: <CustomIcons.Projects width={20} height={20} />,
+    label: "Projects",
   },
   {
     key: "online-courses",
-    icon: <FileOutlined />,
+    icon: <CustomIcons.BookOpen width={20} height={20} />,
     label: "Online Courses",
   },
+];
+
+const pagesItems = [
   {
-    key: "profile",
-    icon: <UserOutlined />,
-    label: "Profile",
+    key: "user-profile",
+    icon: <CustomIcons.UserProfile width={20} height={20} />,
+    label: "User Profile",
+    children: [
+      { key: "profile-overview", label: "Overview" },
+      { key: "profile-projects", label: "Projects" },
+      { key: "profile-campaigns", label: "Campaigns" },
+      { key: "profile-documents", label: "Documents" },
+      { key: "profile-followers", label: "Followers" },
+    ],
   },
   {
     key: "account",
-    icon: <SettingOutlined />,
+    icon: <CustomIcons.Account width={20} height={20} />,
     label: "Account",
   },
   {
     key: "corporate",
-    icon: <TeamOutlined />,
+    icon: <CustomIcons.Corporate width={20} height={20} />,
     label: "Corporate",
+  },
+  {
+    key: "blog",
+    icon: <CustomIcons.Blog width={20} height={20} />,
+    label: "Blog",
+  },
+  {
+    key: "social",
+    icon: <CustomIcons.Social width={20} height={20} />,
+    label: "Social",
   },
 ];
 
-const baseClass = "main-sider";
+// Combine all menu items for collapsed state
+const allMenuItems = [...favoritesItems, ...dashboardItems, ...pagesItems];
 
 const MainSider: React.FC<MainSiderProps> = ({ collapsed }) => {
+  const userMenu = {
+    items: [
+      { key: "1", label: "Profile" },
+      { key: "2", label: "Settings" },
+      { key: "3", label: "Logout" },
+    ],
+  };
   return (
-    // <Sider
-    //   trigger={null}
-    //   collapsible
-    //   collapsed={collapsed}
-    //   className={baseClass}
-    //   style={{
-    //     background: '#fff',
-    //     boxShadow: '2px 0 6px rgba(0,21,41,.08)',
-    //   }}
-    // >
-    //   <div style={{
-    //     padding: '16px',
-    //     borderBottom: '1px solid #f0f0f0',
-    //     display: 'flex',
-    //     alignItems: 'center',
-    //     gap: '8px'
-    //   }}>
-    //     <Avatar style={{ backgroundColor: '#1890ff' }}>BW</Avatar>
-    //     {!collapsed && <Text strong>ByeWind</Text>}
-    //   </div>
-
-    //   <div style={{ padding: '8px 0' }}>
-    //     {!collapsed && (
-    //       <div style={{ padding: '0 16px', marginBottom: '8px' }}>
-    //         <Text type="secondary" style={{ fontSize: '12px' }}>Favorites</Text>
-    //       </div>
-    //     )}
-
-    //     <Menu
-    //       mode="inline"
-    //       defaultSelectedKeys={['overview']}
-    //       items={leftMenuItems}
-    //       style={{ border: 'none' }}
-    //     />
-
-    //     {!collapsed && (
-    //       <>
-    //         <div style={{ padding: '16px', marginTop: '16px' }}>
-    //           <Text type="secondary" style={{ fontSize: '12px' }}>Dashboards</Text>
-    //         </div>
-    //         <div style={{ padding: '16px' }}>
-    //           <Text type="secondary" style={{ fontSize: '12px' }}>Pages</Text>
-    //         </div>
-    //       </>
-    //     )}
-    //   </div>
-    // </Sider>
-
     <Sider
       trigger={null}
       collapsible
       collapsed={collapsed}
-      className={baseClass}
-      width={240}
+      className="main-sider"
+      width={212}
       theme="light"
-      style={{
-        borderRight: "1px solid #f0f0f0",
-      }}
     >
-      <div
-        style={{
-          padding: "20px",
-          borderBottom: "1px solid #f0f0f0",
-          display: "flex",
-          alignItems: "center",
-          gap: "12px",
-        }}
-      >
-        <Avatar size={32} style={{ backgroundColor: "#1890ff" }}>
-          BW
-        </Avatar>
-        {!collapsed && <Text strong>ByeWind</Text>}
+      <div className="main-sider__header">
+        <div className="main-sider__avatar">
+          <Dropdown menu={userMenu} placement="bottomRight">
+            <CustomIcons.Profile width={20} height={20} />
+          </Dropdown>
+        </div>
+        {!collapsed && (
+          <Text strong className="main-sider__title">
+            ByeWind
+          </Text>
+        )}
       </div>
 
-      <div style={{ padding: "16px 0" }}>
-        {!collapsed && (
+      <div className="main-sider__content">
+        {collapsed ? (
+          // When collapsed, show all items in a single menu
+          <Menu
+            mode="inline"
+            defaultSelectedKeys={["default"]}
+            defaultOpenKeys={["user-profile"]}
+            items={allMenuItems}
+            className="main-sider__menu"
+            inlineCollapsed={collapsed}
+          />
+        ) : (
+          // When expanded, show sections with titles
           <>
-            <div style={{ padding: "0 16px 16px" }}>
-              <Text type="secondary" style={{ fontSize: "12px" }}>
-                Favorites
-              </Text>
+            <div className="main-sider__section">
+              <div className="main-sider__section-title">
+                <Text type="secondary">Favorites</Text>
+              </div>
+              <Menu
+                mode="inline"
+                items={favoritesItems}
+                className="main-sider__menu"
+              />
             </div>
-            <div style={{ padding: "0 16px 16px" }}>
-              <Text type="secondary" style={{ fontSize: "12px" }}>
-                Recently
-              </Text>
+
+            <div className="main-sider__section">
+              <div className="main-sider__section-title">
+                <Text type="secondary">Recently</Text>
+              </div>
+            </div>
+
+            <div className="main-sider__section">
+              <div className="main-sider__section-title">
+                <Text type="secondary">Dashboards</Text>
+              </div>
+              <Menu
+                mode="inline"
+                defaultSelectedKeys={["default"]}
+                items={dashboardItems}
+                className="main-sider__menu"
+              />
+            </div>
+
+            <div className="main-sider__section">
+              <div className="main-sider__section-title">
+                <Text type="secondary">Pages</Text>
+              </div>
+              <Menu
+                mode="inline"
+                defaultOpenKeys={["user-profile"]}
+                items={pagesItems}
+                className="main-sider__menu"
+              />
             </div>
           </>
-        )}
-
-        <Menu
-          mode="inline"
-          defaultSelectedKeys={["ecommerce"]}
-          defaultOpenKeys={["ecommerce"]}
-          items={menuItems}
-          style={{ border: "none" }}
-        />
-
-        {!collapsed && (
-          <div style={{ padding: "16px" }}>
-            <Text type="secondary" style={{ fontSize: "12px" }}>
-              Pages
-            </Text>
-            <Menu
-              mode="inline"
-              style={{ border: "none", marginTop: "8px" }}
-              items={[
-                {
-                  key: "user-profile",
-                  icon: <UserOutlined />,
-                  label: "User Profile",
-                },
-                { key: "account", icon: <SettingOutlined />, label: "Account" },
-                {
-                  key: "corporate",
-                  icon: <TeamOutlined />,
-                  label: "Corporate",
-                },
-                { key: "blog", icon: <FileOutlined />, label: "Blog" },
-                { key: "social", icon: <TeamOutlined />, label: "Social" },
-              ]}
-            />
-          </div>
         )}
       </div>
     </Sider>

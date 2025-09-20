@@ -1,0 +1,205 @@
+:root {
+  // Font sizes - following a modular scale (1.25 ratio)
+  --font-size-xs: 0.75rem;     // 12px
+  --font-size-sm: 0.875rem;    // 14px
+  --font-size-base: 1rem;      // 16px
+  --font-size-lg: 1.125rem;    // 18px
+  --font-size-xl: 1.25rem;     // 20px
+  --font-size-2xl: 1.5rem;     // 24px
+  --font-size-3xl: 1.875rem;   // 30px
+  --font-size-4xl: 2.25rem;    // 36px
+  --font-size-5xl: 3rem;       // 48px
+  --font-size-6xl: 3.75rem;    // 60px
+  
+  
+  // Line heights
+  --line-height-tight: 1.2;
+  --line-height-normal: 1.4;
+  --line-height-relaxed: 1.6;
+  --line-height-loose: 1.8;
+
+  --font-weight-bold: 400
+  
+  
+  // Letter spacing
+  --letter-spacing-tight: -0.025em;
+  --letter-spacing-normal: 0;
+  --letter-spacing-wide: 0.025em;
+  --letter-spacing-wider: 0.05em;
+  --letter-spacing-widest: 0.1em;
+}
+
+
+
+// Typography mixins
+// @mixin text-style($size, $weight, $line-height, $letter-spacing: normal) {
+//   font-size: var(--font-size-sm);
+//   font-weight: 400;
+//   line-height: 20px;
+//   letter-spacing: 0%;
+// //   font-family: var(--font-family-primary);
+// }
+
+@mixin text-style-medium(
+  $size: var(--font-size-sm),
+  $weight: 400,
+  $line-height: 20px,
+  $letter-spacing: 0%,
+  $text-color: var(--text-primary-color)
+) {
+  font-size: $size;
+  font-weight: $weight;
+  line-height: $line-height;
+  letter-spacing: $letter-spacing;
+  color: $text-color
+  // font-family: var(--font-family-primary);
+}
+
+// Heading mixins
+@mixin heading-1 {
+  @include text-style(var(--font-size-5xl), var(--font-weight-bold), var(--line-height-tight), var(--letter-spacing-tight));
+  color: var(--color-text-primary);
+}
+
+@mixin heading-2 {
+  @include text-style(var(--font-size-4xl), var(--font-weight-bold), var(--line-height-tight), var(--letter-spacing-tight));
+  color: var(--color-text-primary);
+}
+
+@mixin heading-3 {
+  @include text-style(var(--font-size-3xl), var(--font-weight-semibold), var(--line-height-normal));
+  color: var(--color-text-primary);
+}
+
+@mixin heading-4 {
+  @include text-style(var(--font-size-2xl), var(--font-weight-semibold), var(--line-height-normal));
+  color: var(--color-text-primary);
+}
+
+@mixin heading-5 {
+  @include text-style(var(--font-size-xl), var(--font-weight-medium), var(--line-height-normal));
+  color: var(--color-text-primary);
+}
+
+@mixin heading-6 {
+  @include text-style(var(--font-size-lg), var(--font-weight-medium), var(--line-height-normal));
+  color: var(--color-text-primary);
+}
+
+// Body text mixins
+@mixin body-large {
+  @include text-style(var(--font-size-lg), var(--font-weight-regular), var(--line-height-relaxed));
+  color: var(--color-text-primary);
+}
+
+@mixin body-regular {
+  @include text-style(var(--font-size-base), var(--font-weight-regular), var(--line-height-relaxed));
+  color: var(--color-text-primary);
+}
+
+@mixin body-small {
+  @include text-style(var(--font-size-sm), var(--font-weight-regular), var(--line-height-normal));
+  color: var(--color-text-secondary);
+}
+
+@mixin body-xs {
+  @include text-style(var(--font-size-xs), var(--font-weight-regular), var(--line-height-normal));
+  color: var(--color-text-tertiary);
+}
+
+// Special text styles
+@mixin text-caption {
+  @include text-style(var(--font-size-xs), var(--font-weight-medium), var(--line-height-normal), var(--letter-spacing-wide));
+  color: var(--color-text-tertiary);
+  text-transform: uppercase;
+}
+
+@mixin text-overline {
+  @include text-style(var(--font-size-xs), var(--font-weight-semibold), var(--line-height-normal), var(--letter-spacing-widest));
+  color: var(--color-text-quaternary);
+  text-transform: uppercase;
+}
+
+@mixin text-code {
+  font-family: var(--font-family-mono);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  background-color: var(--color-bg-quaternary);
+  color: var(--color-text-primary);
+  padding: 2px 6px;
+  border-radius: var(--border-radius-sm);
+}
+
+@mixin text-link {
+  color: var(--color-text-link);
+  text-decoration: none;
+  cursor: pointer;
+  transition: color var(--transition-fast);
+  
+  &:hover {
+    color: var(--color-text-link-hover);
+    text-decoration: underline;
+  }
+  
+  &:active {
+    color: var(--color-primary-active);
+  }
+}
+
+// Text color utilities
+@mixin text-primary {
+  color: var(--color-text-primary);
+}
+
+@mixin text-secondary {
+  color: var(--color-text-secondary);
+}
+
+@mixin text-tertiary {
+  color: var(--color-text-tertiary);
+}
+
+@mixin text-success {
+  color: var(--color-success);
+}
+
+@mixin text-warning {
+  color: var(--color-warning);
+}
+
+@mixin text-error {
+  color: var(--color-error);
+}
+
+@mixin text-info {
+  color: var(--color-info);
+}
+
+// Responsive typography mixins
+@mixin responsive-text($mobile-size, $tablet-size, $desktop-size) {
+  font-size: $mobile-size;
+  
+  @media (min-width: 768px) {
+    font-size: $tablet-size;
+  }
+  
+  @media (min-width: 1024px) {
+    font-size: $desktop-size;
+  }
+}
+
+@mixin responsive-heading-1 {
+  @include responsive-text(var(--font-size-3xl), var(--font-size-4xl), var(--font-size-5xl));
+  font-weight: var(--font-weight-bold);
+  line-height: var(--line-height-tight);
+  letter-spacing: var(--letter-spacing-tight);
+  color: var(--color-text-primary);
+}
+
+@mixin responsive-heading-2 {
+  @include responsive-text(var(--font-size-2xl), var(--font-size-3xl), var(--font-size-4xl));
+  font-weight: var(--font-weight-bold);
+  line-height: var(--line-height-tight);
+  letter-spacing: var(--letter-spacing-tight);
+  color: var(--color-text-primary);
+}
