@@ -5,11 +5,6 @@
   --font-size-base: 1rem;      // 16px
   --font-size-lg: 1.125rem;    // 18px
   --font-size-xl: 1.25rem;     // 20px
-  --font-size-2xl: 1.5rem;     // 24px
-  --font-size-3xl: 1.875rem;   // 30px
-  --font-size-4xl: 2.25rem;    // 36px
-  --font-size-5xl: 3rem;       // 48px
-  --font-size-6xl: 3.75rem;    // 60px
   
   
   // Line heights
@@ -21,12 +16,7 @@
   --font-weight-bold: 400
   
   
-  // Letter spacing
-  --letter-spacing-tight: -0.025em;
-  --letter-spacing-normal: 0;
-  --letter-spacing-wide: 0.025em;
-  --letter-spacing-wider: 0.05em;
-  --letter-spacing-widest: 0.1em;
+
 }
 
 
@@ -53,6 +43,33 @@
   letter-spacing: $letter-spacing;
   color: $text-color
   // font-family: var(--font-family-primary);
+}
+@mixin text-style-medium-bold(
+  $size: var(--font-size-sm),
+  $weight: 600,
+  $line-height: 20px,
+  $letter-spacing: 0%,
+  $text-color: var(--text-primary-color)
+) {
+  font-size: $size;
+  font-weight: $weight;
+  line-height: $line-height;
+  letter-spacing: $letter-spacing;
+  color: $text-color
+  // font-family: var(--font-family-primary);
+}
+@mixin text-style-small (
+  $size: var(--font-size-xs),
+  $weight: 400,
+  $line-height: 18px,
+  $letter-spacing: 0%,
+  $text-color: var(--text-secondary-color)
+) {
+  font-size: $size;
+  font-weight: $weight;
+  line-height: $line-height;
+  letter-spacing: $letter-spacing;
+  color: $text-color
 }
 
 // Heading mixins

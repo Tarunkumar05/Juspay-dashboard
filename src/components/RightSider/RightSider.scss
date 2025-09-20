@@ -1,0 +1,28 @@
+.right-sider {
+  border-left: 1px solid var(--border-color);
+  background: var(--color-bg-primary);
+
+  &__content {
+    padding: 24px 16px;
+  }
+
+  &__section {
+    margin-bottom: 24px;
+    &_heading{
+        @include text-style-medium-bold;
+    }
+
+    &--last {
+      // No margin-bottom for the last section
+    }
+  }
+
+  .item-title {
+    font-size: 12px;
+    @include text-style-medium
+  }
+
+  .item-time {
+    @include text-style-small
+  }
+}

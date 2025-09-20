@@ -1,7 +1,5 @@
-
-import React, { useState } from 'react';
+import React, { useState, useMemo } from "react";
 import {
-  Layout,
   Table,
   Button,
   Avatar,
@@ -11,16 +9,23 @@ import {
   Checkbox,
   Typography,
   Pagination,
-} from 'antd';
+  Select,
+  DatePicker,
+  Dropdown,
+  Menu,
+} from "antd";
 import {
   PlusOutlined,
   SearchOutlined,
   FilterOutlined,
   SortAscendingOutlined,
-} from '@ant-design/icons';
+  MoreOutlined,
+  CalendarOutlined,
+} from "@ant-design/icons";
+import "./OrderList.scss";
 
-const { Content } = Layout;
 const { Search } = Input;
+const { Option } = Select;
 
 interface OrderData {
   key: string;
@@ -32,126 +37,207 @@ interface OrderData {
   project: string;
   address: string;
   date: string;
-  status: 'In Progress' | 'Complete' | 'Pending' | 'Approved' | 'Rejected';
+  timestamp: number;
+  status: "In Progress" | "Complete" | "Pending" | "Approved" | "Rejected";
 }
 
-const OrderList: React.FC = () => {
-  const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
+interface FilterState {
+  status: string[];
+  dateRange: string;
+  searchText: string;
+}
 
-  const orderData: OrderData[] = [
+interface SortState {
+  field: string;
+  order: "asc" | "desc";
+}
+
+// Dummy data generator
+const generateOrderData = (): OrderData[] => {
+  const users = [
+    { name: "Natali Craig", seed: "natali" },
+    { name: "Kate Morrison", seed: "kate" },
+    { name: "Drew Cano", seed: "drew" },
+    { name: "Orlando Diggs", seed: "orlando" },
+    { name: "Andi Lane", seed: "andi" },
+    { name: "Phoenix Baker", seed: "phoenix" },
+    { name: "Lana Steiner", seed: "lana" },
+    { name: "Demi Wilkinson", seed: "demi" },
+    { name: "Candice Wu", seed: "candice" },
+    { name: "Olivia Rhye", seed: "olivia" },
+  ];
+
+  const projects = [
+    "Landing Page",
+    "CRM Admin pages",
+    "Client Project",
+    "Admin Dashboard",
+    "App Landing Page",
+    "E-commerce Site",
+    "Mobile App UI",
+    "Portfolio Website",
+    "SaaS Platform",
+    "Marketing Site",
+  ];
+
+  const addresses = [
+    "Meadow Lane Oakland",
+    "Larry San Francisco",
+    "Bagwell Avenue Ocala",
+    "Washburn Baton Rouge",
+    "Nest Lane Olivette",
+    "Main Street Boston",
+    "Oak Avenue Chicago",
+    "Pine Street Seattle",
+    "Maple Drive Austin",
+    "Cedar Road Denver",
+  ];
+
+  const dates = [
+    { text: "Just now", offset: 1000 },
+    { text: "A minute ago", offset: 60000 },
+    { text: "5 minutes ago", offset: 300000 },
+    { text: "1 hour ago", offset: 3600000 },
+    { text: "2 hours ago", offset: 7200000 },
+    { text: "Yesterday", offset: 86400000 },
+    { text: "2 days ago", offset: 172800000 },
     {
-      key: '1',
-      orderId: '#CM9801',
-      user: { name: 'Natali Craig', avatar: 'https://api.dicebear.com/7.x/miniavs/svg?seed=natali' },
-      project: 'Landing Page',
-      address: 'Meadow Lane Oakland',
-      date: 'Just now',
-      status: 'In Progress',
+      text: "Feb 2, 2023",
+      offset: Date.now() - new Date("2023-02-02").getTime(),
     },
     {
-      key: '2',
-      orderId: '#CM9802',
-      user: { name: 'Kate Morrison', avatar: 'https://api.dicebear.com/7.x/miniavs/svg?seed=kate' },
-      project: 'CRM Admin pages',
-      address: 'Larry San Francisco',
-      date: 'A minute ago',
-      status: 'Complete',
+      text: "Jan 15, 2023",
+      offset: Date.now() - new Date("2023-01-15").getTime(),
     },
     {
-      key: '3',
-      orderId: '#CM9803',
-      user: { name: 'Drew Cano', avatar: 'https://api.dicebear.com/7.x/miniavs/svg?seed=drew' },
-      project: 'Client Project',
-      address: 'Bagwell Avenue Ocala',
-      date: '1 hour ago',
-      status: 'Pending',
-    },
-    {
-      key: '4',
-      orderId: '#CM9804',
-      user: { name: 'Orlando Diggs', avatar: 'https://api.dicebear.com/7.x/miniavs/svg?seed=orlando' },
-      project: 'Admin Dashboard',
-      address: 'Washburn Baton Rouge',
-      date: 'Yesterday',
-      status: 'Approved',
-    },
-    {
-      key: '5',
-      orderId: '#CM9805',
-      user: { name: 'Andi Lane', avatar: 'https://api.dicebear.com/7.x/miniavs/svg?seed=andi' },
-      project: 'App Landing Page',
-      address: 'Nest Lane Olivette',
-      date: 'Feb 2, 2023',
-      status: 'Rejected',
-    },
-    {
-      key: '6',
-      orderId: '#CM9801',
-      user: { name: 'Natali Craig', avatar: 'https://api.dicebear.com/7.x/miniavs/svg?seed=natali' },
-      project: 'Landing Page',
-      address: 'Meadow Lane Oakland',
-      date: 'Just now',
-      status: 'In Progress',
-    },
-    {
-      key: '7',
-      orderId: '#CM9802',
-      user: { name: 'Kate Morrison', avatar: 'https://api.dicebear.com/7.x/miniavs/svg?seed=kate' },
-      project: 'CRM Admin pages',
-      address: 'Larry San Francisco',
-      date: 'A minute ago',
-      status: 'Complete',
-    },
-    {
-      key: '8',
-      orderId: '#CM9803',
-      user: { name: 'Drew Cano', avatar: 'https://api.dicebear.com/7.x/miniavs/svg?seed=drew' },
-      project: 'Client Project',
-      address: 'Bagwell Avenue Ocala',
-      date: '1 hour ago',
-      status: 'Pending',
-    },
-    {
-      key: '9',
-      orderId: '#CM9804',
-      user: { name: 'Orlando Diggs', avatar: 'https://api.dicebear.com/7.x/miniavs/svg?seed=orlando' },
-      project: 'Admin Dashboard',
-      address: 'Washburn Baton Rouge',
-      date: 'Yesterday',
-      status: 'Approved',
-    },
-    {
-      key: '10',
-      orderId: '#CM9805',
-      user: { name: 'Andi Lane', avatar: 'https://api.dicebear.com/7.x/miniavs/svg?seed=andi' },
-      project: 'App Landing Page',
-      address: 'Nest Lane Olivette',
-      date: 'Feb 2, 2023',
-      status: 'Rejected',
+      text: "Dec 20, 2022",
+      offset: Date.now() - new Date("2022-12-20").getTime(),
     },
   ];
 
+  const statuses: Array<
+    "In Progress" | "Complete" | "Pending" | "Approved" | "Rejected"
+  > = ["In Progress", "Complete", "Pending", "Approved", "Rejected"];
+
+  // Generate 50 orders for better pagination demonstration
+  const orders: OrderData[] = [];
+  for (let i = 1; i <= 50; i++) {
+    const userIndex = (i - 1) % users.length;
+    const projectIndex = (i - 1) % projects.length;
+    const addressIndex = (i - 1) % addresses.length;
+    const dateIndex = (i - 1) % dates.length;
+    const statusIndex = (i - 1) % statuses.length;
+
+    orders.push({
+      key: i.toString(),
+      orderId: `#CM98${String(i).padStart(2, "0")}`,
+      user: {
+        name: users[userIndex].name,
+        avatar: `https://api.dicebear.com/7.x/miniavs/svg?seed=${users[userIndex].seed}${i}`,
+      },
+      project: projects[projectIndex],
+      address: addresses[addressIndex],
+      date: dates[dateIndex].text,
+      timestamp: Date.now() - dates[dateIndex].offset - i * 1000,
+      status: statuses[statusIndex],
+    });
+  }
+
+  return orders;
+};
+
+const OrderList: React.FC = () => {
+  const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [pageSize] = useState(10); // Changed to 10 rows per page
+  const [filters, setFilters] = useState<FilterState>({
+    status: [],
+    dateRange: "all",
+    searchText: "",
+  });
+  const [sortState, setSortState] = useState<SortState>({
+    field: "timestamp",
+    order: "desc",
+  });
+
+  const orderData: OrderData[] = generateOrderData();
+
   const getStatusColor = (status: string) => {
     switch (status) {
-      case 'In Progress':
-        return '#1890ff';
-      case 'Complete':
-        return '#52c41a';
-      case 'Pending':
-        return '#faad14';
-      case 'Approved':
-        return '#722ed1';
-      case 'Rejected':
-        return '#f5222d';
+      case "In Progress":
+        return "#6366f1";
+      case "Complete":
+        return "#10b981";
+      case "Pending":
+        return "#f59e0b";
+      case "Approved":
+        return "#8b5cf6";
+      case "Rejected":
+        return "#ef4444";
       default:
-        return '#d9d9d9';
+        return "#6b7280";
     }
   };
 
+  // Filter and sort data
+  const filteredAndSortedData = useMemo(() => {
+    let filtered = [...orderData];
+
+    // Apply search filter
+    if (filters.searchText) {
+      const searchLower = filters.searchText.toLowerCase();
+      filtered = filtered.filter(
+        (item) =>
+          item.orderId.toLowerCase().includes(searchLower) ||
+          item.user.name.toLowerCase().includes(searchLower) ||
+          item.project.toLowerCase().includes(searchLower) ||
+          item.address.toLowerCase().includes(searchLower)
+      );
+    }
+
+    // Apply status filter
+    if (filters.status.length > 0) {
+      filtered = filtered.filter((item) =>
+        filters.status.includes(item.status)
+      );
+    }
+
+    // Apply sorting
+    filtered.sort((a, b) => {
+      let aValue: any = a[sortState.field as keyof OrderData];
+      let bValue: any = b[sortState.field as keyof OrderData];
+
+      if (sortState.field === "user") {
+        aValue = a.user.name;
+        bValue = b.user.name;
+      }
+
+      if (typeof aValue === "string") {
+        aValue = aValue.toLowerCase();
+        bValue = bValue.toLowerCase();
+      }
+
+      if (sortState.order === "asc") {
+        return aValue > bValue ? 1 : -1;
+      } else {
+        return aValue < bValue ? 1 : -1;
+      }
+    });
+
+    return filtered;
+  }, [orderData, filters, sortState]);
+
+  // Paginate data
+  const paginatedData = useMemo(() => {
+    const startIndex = (currentPage - 1) * pageSize;
+    const endIndex = startIndex + pageSize;
+    return filteredAndSortedData.slice(startIndex, endIndex);
+  }, [filteredAndSortedData, currentPage, pageSize]);
+
   const columns = [
     {
-      title: '',
-      dataIndex: 'checkbox',
+      title: "",
+      dataIndex: "checkbox",
       width: 50,
       render: (_: any, record: OrderData) => (
         <Checkbox
@@ -160,133 +246,214 @@ const OrderList: React.FC = () => {
             if (e.target.checked) {
               setSelectedRowKeys([...selectedRowKeys, record.key]);
             } else {
-              setSelectedRowKeys(selectedRowKeys.filter(key => key !== record.key));
+              setSelectedRowKeys(
+                selectedRowKeys.filter((key) => key !== record.key)
+              );
             }
           }}
         />
       ),
     },
     {
-      title: 'Order ID',
-      dataIndex: 'orderId',
-      key: 'orderId',
+      title: "Order ID",
+      dataIndex: "orderId",
+      key: "orderId",
+      sorter: true,
     },
     {
-      title: 'User',
-      dataIndex: 'user',
-      key: 'user',
+      title: "User",
+      dataIndex: "user",
+      key: "user",
       render: (user: { name: string; avatar: string }) => (
-        <Space>
-          <Avatar src={user.avatar} size="small" />
-          {user.name}
+        <Space size={12}>
+          <Avatar src={user.avatar} size={32} />
+          <span className="user-name">{user.name}</span>
         </Space>
       ),
+      sorter: true,
     },
     {
-      title: 'Project',
-      dataIndex: 'project',
-      key: 'project',
+      title: "Project",
+      dataIndex: "project",
+      key: "project",
+      sorter: true,
     },
     {
-      title: 'Address',
-      dataIndex: 'address',
-      key: 'address',
+      title: "Address",
+      dataIndex: "address",
+      key: "address",
+      sorter: true,
     },
     {
-      title: 'Date',
-      dataIndex: 'date',
-      key: 'date',
+      title: "Date",
+      dataIndex: "date",
+      key: "date",
+      render: (date: string) => (
+        <Space>
+          <CalendarOutlined className="date-icon" />
+          {date}
+        </Space>
+      ),
+      sorter: true,
     },
     {
-      title: 'Status',
-      dataIndex: 'status',
-      key: 'status',
+      title: "Status",
+      dataIndex: "status",
+      key: "status",
       render: (status: string) => (
-        <Tag color={getStatusColor(status)} style={{ borderRadius: '12px' }}>
+        <Tag color={getStatusColor(status)} className="status-tag">
           {status}
         </Tag>
+      ),
+      sorter: true,
+    },
+    {
+      title: "",
+      key: "actions",
+      width: 50,
+      render: (_: any, record: OrderData) => (
+        <Dropdown
+          overlay={
+            <Menu>
+              <Menu.Item key="edit">Edit</Menu.Item>
+              <Menu.Item key="view">View Details</Menu.Item>
+              <Menu.Item key="delete" danger>
+                Delete
+              </Menu.Item>
+            </Menu>
+          }
+          trigger={["click"]}
+        >
+          <Button
+            type="text"
+            icon={<MoreOutlined />}
+            className="action-button"
+          />
+        </Dropdown>
       ),
     },
   ];
 
-//   const onSelectChange = (newSelectedRowKeys: React.Key[]) => {
-//     setSelectedRowKeys(newSelectedRowKeys);
-//   };
+  const handleSearch = (value: string) => {
+    setFilters({ ...filters, searchText: value });
+    setCurrentPage(1);
+  };
 
-//   const rowSelection = {
-//     selectedRowKeys,
-//     onChange: onSelectChange,
-//   };
+  const handleStatusFilter = (values: string[]) => {
+    setFilters({ ...filters, status: values });
+    setCurrentPage(1);
+  };
+
+  const handleSort = (field: string) => {
+    setSortState({
+      field,
+      order:
+        sortState.field === field && sortState.order === "asc" ? "desc" : "asc",
+    });
+  };
+
+  const filterMenu = (
+    <div className="filter-dropdown">
+      <div className="filter-section">
+        <Typography.Text strong>Status</Typography.Text>
+        <Select
+          mode="multiple"
+          placeholder="Select status"
+          value={filters.status}
+          onChange={handleStatusFilter}
+          style={{ width: "100%" }}
+        >
+          <Option value="In Progress">In Progress</Option>
+          <Option value="Complete">Complete</Option>
+          <Option value="Pending">Pending</Option>
+          <Option value="Approved">Approved</Option>
+          <Option value="Rejected">Rejected</Option>
+        </Select>
+      </div>
+    </div>
+  );
+
+  const sortMenu = (
+    <Menu>
+      <Menu.Item key="orderId" onClick={() => handleSort("orderId")}>
+        Sort by Order ID
+      </Menu.Item>
+      <Menu.Item key="user" onClick={() => handleSort("user")}>
+        Sort by User
+      </Menu.Item>
+      <Menu.Item key="project" onClick={() => handleSort("project")}>
+        Sort by Project
+      </Menu.Item>
+      <Menu.Item key="date" onClick={() => handleSort("timestamp")}>
+        Sort by Date
+      </Menu.Item>
+      <Menu.Item key="status" onClick={() => handleSort("status")}>
+        Sort by Status
+      </Menu.Item>
+    </Menu>
+  );
 
   return (
-    <Content
-      style={{
-        margin: "16px",
-        padding: "24px",
-        background: "#fff",
-        overflow: "auto",
-      }}
-    >
+    <div className="order-list-container">
       {/* Header */}
-      <div style={{ 
-        display: 'flex', 
-        justifyContent: 'space-between', 
-        alignItems: 'center', 
-        marginBottom: '24px' 
-      }}>
-        <Typography.Title level={4} style={{ margin: 0 }}>
+      <div className="order-list-header">
+        <Typography.Title level={4} className="page-title">
           Order List
         </Typography.Title>
+      </div>
+
+      {/* Action Bar */}
+      <div className="action-bar">
+        <div className="action-buttons">
+          <Button type="primary" icon={<PlusOutlined />} className="add-button"/>
+         
+          <Dropdown overlay={filterMenu} trigger={["click"]}>
+            <Button icon={<FilterOutlined />} className="filter-button"/>
+
+          </Dropdown>
+          <Dropdown overlay={sortMenu} trigger={["click"]}>
+            <Button icon={<SortAscendingOutlined />} className="sort-button"/>
+          </Dropdown>
+        </div>
+
         <Search
           placeholder="Search"
-          style={{ width: 300 }}
+          allowClear
+          onSearch={handleSearch}
+          onChange={(e) => handleSearch(e.target.value)}
+          className="search-input"
           prefix={<SearchOutlined />}
         />
       </div>
 
-      {/* Action Buttons */}
-      <div style={{ 
-        display: 'flex', 
-        justifyContent: 'space-between', 
-        alignItems: 'center', 
-        marginBottom: '16px' 
-      }}>
-        <Space>
-          <Button icon={<PlusOutlined />} type="primary">
-            Add
-          </Button>
-          <Button icon={<FilterOutlined />}>
-            Filter
-          </Button>
-          <Button icon={<SortAscendingOutlined />}>
-            Sort
-          </Button>
-        </Space>
-      </div>
-
       {/* Table */}
-      <Table
-        // rowSelection={rowSelection}
-        columns={columns}
-        dataSource={orderData}
-        pagination={false}
-        style={{ marginBottom: '16px' }}
-      />
-
-      {/* Pagination */}
-      <div style={{ 
-        display: 'flex', 
-        justifyContent: 'center', 
-        marginTop: '24px' 
-      }}>
-        <Pagination 
-          current={1} 
-          total={50} 
-          showSizeChanger={false}
-          showQuickJumper={false}
+      <div className="table-container">
+        <Table
+          columns={columns}
+          dataSource={paginatedData}
+          pagination={false}
+          className="order-table"
+          rowClassName="table-row"
         />
       </div>
-    </Content>
+
+      {/* Pagination */}
+      <div className="pagination-container">
+        <Pagination
+          current={currentPage}
+          total={filteredAndSortedData.length}
+          pageSize={pageSize}
+          showSizeChanger={false}
+          showQuickJumper={false}
+          showTotal={(total, range) =>
+            `${range[0]}-${range[1]} of ${total} items`
+          }
+          showLessItems={true}
+          onChange={setCurrentPage}
+          className="pagination"
+        />
+      </div>
+    </div>
   );
 };
 

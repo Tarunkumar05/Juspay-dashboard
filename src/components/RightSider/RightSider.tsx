@@ -1,8 +1,10 @@
 import { Avatar, List, Typography } from "antd";
 import Sider from "antd/es/layout/Sider";
-import { BugOutlined } from "@ant-design/icons";
+import CustomIcons from "../CustomIcons/CustomIcons";
+import "./RightSider.scss";
 
-const { Text, Title } = Typography;
+const { Text } = Typography;
+
 interface RightSiderProps {
   collapsed: boolean;
 }
@@ -87,67 +89,6 @@ const RightSider: React.FC<RightSiderProps> = ({ collapsed }) => {
   ];
 
   return (
-    // <Sider
-    //   trigger={null}
-    //   collapsible
-    //   collapsed={collapsed}
-    //   reverseArrow
-    //   width={320}
-    //   collapsedWidth={0}
-    //   style={{
-    //     background: "#fff",
-    //     boxShadow: "-2px 0 6px rgba(0,21,41,.08)",
-    //   }}
-    // >
-    //   <div style={{ padding: "16px" }}>
-    //     <Title level={5}>Notifications</Title>
-    //     <Text type="secondary">You have a bug that needs...</Text>
-    //     <br />
-    //     <Text type="secondary" style={{ fontSize: "12px" }}>
-    //       Just now
-    //     </Text>
-
-    //     <Divider />
-
-    //     <Title level={5}>Activities</Title>
-    //     <List
-    //       dataSource={activities}
-    //       renderItem={(item) => (
-    //         <List.Item style={{ padding: "8px 0" }}>
-    //           <List.Item.Meta
-    //             avatar={<Avatar size="small" src={item.avatar} />}
-    //             title={
-    //               <Text style={{ fontSize: "14px" }}>
-    //                 <Text strong>{item.user}</Text> {item.action}
-    //               </Text>
-    //             }
-    //             description={
-    //               <Text type="secondary" style={{ fontSize: "12px" }}>
-    //                 {item.time}
-    //               </Text>
-    //             }
-    //           />
-    //         </List.Item>
-    //       )}
-    //     />
-
-    //     <Divider />
-
-    //     <Title level={5}>Contacts</Title>
-    //     <List
-    //       dataSource={contacts}
-    //       renderItem={(item) => (
-    //         <List.Item style={{ padding: "8px 0" }}>
-    //           <List.Item.Meta
-    //             avatar={<Avatar size="small" src={item.avatar} />}
-    //             title={<Text style={{ fontSize: "14px" }}>{item.name}</Text>}
-    //           />
-    //         </List.Item>
-    //       )}
-    //     />
-    //   </div>
-    // </Sider>
-
     <Sider
       trigger={null}
       collapsible
@@ -155,29 +96,27 @@ const RightSider: React.FC<RightSiderProps> = ({ collapsed }) => {
       reverseArrow
       width={320}
       collapsedWidth={0}
-      style={{
-        borderLeft: "1px solid #f0f0f0",
-        background: "#fafafa",
-      }}
+      className="right-sider"
     >
-      <div style={{ padding: "24px 16px" }}>
+      <div className="right-sider__content">
         {/* Notifications */}
-        <div style={{ marginBottom: "24px" }}>
-          <Title level={5}>Notifications</Title>
+        <div className="right-sider__section">
+          <h2 className="right-sider__section_heading" >Notifications</h2>
           <List
             size="small"
             dataSource={[
-              { text: "You have a bug that needs...", time: "Just now" },
-              { text: "New user registered", time: "59 minutes ago" },
-              { text: "You have a bug that needs...", time: "12 hours ago" },
+              { text: "You have a bug that needs...", time: "Just now", icon: <CustomIcons.Bug/> },
+              { text: "New user registered", time: "59 minutes ago", icon: <CustomIcons.NewUser/> },
+              { text: "You have a bug that needs...", time: "12 hours ago", icon: <CustomIcons.Bug/> },
+              { text: "You have a bug that needs...", time: "Today: 11:59 AM", icon: <CustomIcons.Subscribe/> },
             ]}
             renderItem={(item) => (
               <List.Item>
                 <List.Item.Meta
-                  avatar={<BugOutlined />}
-                  title={<Text style={{ fontSize: "12px" }}>{item.text}</Text>}
+                  avatar={item.icon}
+                  title={<Text className="item-title">{item.text}</Text>}
                   description={
-                    <Text type="secondary" style={{ fontSize: "11px" }}>
+                    <Text type="secondary" className="item-time">
                       {item.time}
                     </Text>
                   }
@@ -188,8 +127,8 @@ const RightSider: React.FC<RightSiderProps> = ({ collapsed }) => {
         </div>
 
         {/* Activities */}
-        <div style={{ marginBottom: "24px" }}>
-          <Title level={5}>Activities</Title>
+        <div className="right-sider__section">
+          <h2 className="right-sider__section_heading" >Activities</h2>
           <List
             size="small"
             dataSource={activities}
@@ -198,12 +137,12 @@ const RightSider: React.FC<RightSiderProps> = ({ collapsed }) => {
                 <List.Item.Meta
                   avatar={<Avatar size={24} src={item.avatar} />}
                   title={
-                    <Text style={{ fontSize: "12px" }}>
+                    <Text className="item-title">
                       {item.user} {item.action}
                     </Text>
                   }
                   description={
-                    <Text type="secondary" style={{ fontSize: "11px" }}>
+                    <Text type="secondary" className="item-time">
                       {item.time}
                     </Text>
                   }
@@ -214,8 +153,8 @@ const RightSider: React.FC<RightSiderProps> = ({ collapsed }) => {
         </div>
 
         {/* Contacts */}
-        <div>
-          <Title level={5}>Contacts</Title>
+        <div className="right-sider__section--last">
+          <h2 className="right-sider__section_heading" >Contacts</h2>
           <List
             size="small"
             dataSource={contacts}
@@ -223,7 +162,7 @@ const RightSider: React.FC<RightSiderProps> = ({ collapsed }) => {
               <List.Item>
                 <List.Item.Meta
                   avatar={<Avatar size={24} src={item.avatar} />}
-                  title={<Text style={{ fontSize: "12px" }}>{item.name}</Text>}
+                  title={<Text className="item-title">{item.name}</Text>}
                 />
               </List.Item>
             )}

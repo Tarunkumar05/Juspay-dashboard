@@ -16,15 +16,14 @@ interface MainSiderProps {
 const favoritesItems = [
   {
     key: "overview",
-    icon: <DashboardOutlined />,
-    label: "Overview",
+    label: "• Overview",
   },
   {
     key: "projects",
-    icon: <ProjectOutlined />,
-    label: "Projects",
+    label: "• Projects",
   },
 ];
+
 
 const dashboardItems = [
   {
@@ -66,21 +65,37 @@ const pagesItems = [
     key: "account",
     icon: <CustomIcons.Account width={20} height={20} />,
     label: "Account",
+    children: [
+      { key: "Account-option-1", label: "Account-1" },
+      { key: "Account-option21", label: "Account-2" },
+    ],
   },
   {
     key: "corporate",
     icon: <CustomIcons.Corporate width={20} height={20} />,
     label: "Corporate",
+    children: [
+      { key: "Corporate-option-1", label: "Corporate-1" },
+      { key: "Corporate-option21", label: "Corporate-2" },
+    ],
   },
   {
     key: "blog",
     icon: <CustomIcons.Blog width={20} height={20} />,
     label: "Blog",
+    children: [
+      { key: "Blog-option-1", label: "Blog-1" },
+      { key: "Blog-option21", label: "Blog-2" },
+    ],
   },
   {
     key: "social",
     icon: <CustomIcons.Social width={20} height={20} />,
     label: "Social",
+    children: [
+      { key: "Social-option-1", label: "Social-1" },
+      { key: "Social-option21", label: "Social-2" },
+    ],
   },
 ];
 
@@ -134,6 +149,7 @@ const MainSider: React.FC<MainSiderProps> = ({ collapsed }) => {
             <div className="main-sider__section">
               <div className="main-sider__section-title">
                 <Text type="secondary">Favorites</Text>
+                <Text type="secondary">Recently</Text>
               </div>
               <Menu
                 mode="inline"
@@ -142,11 +158,6 @@ const MainSider: React.FC<MainSiderProps> = ({ collapsed }) => {
               />
             </div>
 
-            <div className="main-sider__section">
-              <div className="main-sider__section-title">
-                <Text type="secondary">Recently</Text>
-              </div>
-            </div>
 
             <div className="main-sider__section">
               <div className="main-sider__section-title">

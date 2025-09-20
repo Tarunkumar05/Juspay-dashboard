@@ -17,6 +17,11 @@ import LightClockIcon from '../../assets/icons/light-clock.svg?react';
 import LightNotificationIcon from '../../assets/icons/light-notification.svg?react';
 import LightStarIcon from '../../assets/icons/light-star.svg?react';
 import DarkStarIcon from '../../assets/icons/dark-star.svg?react';
+import BugIcon from '../../assets/icons/bug.svg?react';
+import NewUserIcon from '../../assets/icons/new-user.svg?react';
+import SubscribeIcon from '../../assets/icons/subscribe.svg?react';
+import UpArrowIcon from '../../assets/icons/light-up-arrow.svg?react';
+import DownArrowIcon from '../../assets/icons/light-down-arrow.svg?react';
 
 const CustomIcons = {
   Clock: ClockIcon,
@@ -38,6 +43,11 @@ const CustomIcons = {
   LightNotification: LightNotificationIcon,
   LightStar: LightStarIcon,
   DarkStar: DarkStarIcon,
+  Bug: BugIcon,
+  NewUser: NewUserIcon,
+  Subscribe: SubscribeIcon,
+  UpArrow: UpArrowIcon,
+  DownArrow: DownArrowIcon,
 };
 
 export default CustomIcons;
