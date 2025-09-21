@@ -5,12 +5,7 @@ import svgr from 'vite-plugin-svgr'
 export default defineConfig({
   plugins: [
     react(), 
-    svgr({
-      include: "**/*.svg?react",
-      svgrOptions: {
-        exportType: 'default',
-      },
-    })
+    svgr()
   ],
   css: {
     preprocessorOptions: {
