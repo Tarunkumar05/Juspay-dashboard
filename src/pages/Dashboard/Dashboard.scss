@@ -2,19 +2,47 @@
   padding: 24px;
   background: var(--color-bg-primary);
   overflow: auto;
+  height: calc(100vh - 64px);
+  @include custom-scrollbar;
 
   .ant-card {
     background: var(--color-bg-secondary);
-    .ant-card-head-title{
-        @include text-style-medium-bold;
+    border: none;
+    padding: 24px;
+    border-radius: 16px;
+    .ant-card-head-title {
+      @include text-style-medium-bold;
+    }
+
+    .ant-card-head {
+      border: none;
+      padding: 0px;
+      min-height: 20px !important;
+    }
+    .ant-card-body {
+      padding: 0px;
     }
   }
 
   &__stats-row {
     margin-bottom: 24px;
-    .ant-statistic-content{
+    .ant-statistic {
+      .ant-statistic-title {
+        @include text-style-medium-bold;
+      }
+      .ant-statistic-content {
         display: flex;
         justify-content: space-between;
+        .ant-statistic-content-value {
+          color: var(--text-primary-color);
+        }
+        //   .ant-statistic-content-suffix{
+        //     .ant-typography{
+
+        //         display: flex;
+        //     }
+        //   }
+      }
     }
   }
 
@@ -24,20 +52,19 @@
 
   .top-sell-table {
     .ant-table {
-      border-radius: 12px;
+      border-radius: 0px;
       overflow: hidden;
       box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 
       .ant-table-thead {
         > tr {
           > th {
-            background: var(--bg-primary-color);
+            background: var(--color-bg-secondary);
             border-bottom: 1px solid #ffffff33;
             min-width: 80px;
             max-width: 400px;
             padding: 8px 12px 8px 12px;
             height: 40px;
-
 
             @include text-style-small;
 
@@ -78,7 +105,7 @@
           > td {
             border-bottom: 1px solid var(--border-color);
             @include text-style-small($text-color: var(--text-primary-color));
-
+            background: var(--color-bg-secondary);
 
             &:first-child {
               padding-left: 24px;
@@ -118,12 +145,12 @@
 // Revenue Chart Styles
 .revenue-chart {
   position: relative;
-  height: 300px;
+  height: 318px;
 
   &__header {
     position: absolute;
-    top: 10px;
-    left: 20px;
+    // top: 10px;
+    left: 15px;
     z-index: 10;
     display: flex;
     align-items: center;
@@ -135,6 +162,9 @@
   display: flex;
   align-items: center;
   gap: 8px;
+  &__title {
+    @include text-style-medium-bold;
+  }
 
   &__dot {
     width: 12px;
@@ -159,25 +189,44 @@
 // Location Revenue Styles
 .location-revenue {
   &__item {
-    img{
-        width: 100%;
+    img {
+      width: 100%;
+    }
+  }
+  .ant-progress .ant-progress-inner {
+    height: 2px;
+    .ant-progress-bg {
+      background: #a8c5da;
     }
   }
 
   &__header {
     display: flex;
     justify-content: space-between;
-    margin-bottom: 8px;
+    .ant-typography {
+      @include text-style-small($text-color: var(--text-primary-color));
+    }
   }
 }
 
-// Sales Chart Styles
-.sales-chart {
-  position: relative;
+.top-product {
+  height: 344px;
+}
 
-  &__container {
-    height: 200px;
+// Sales Chart Styles
+.total-sale {
+  max-width: 202px;
+  max-height: 344px;
+  &_chart {
     position: relative;
+
+    &_container {
+      height: 120px;
+      //   width: 120px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
   }
 }
 
@@ -204,12 +253,27 @@
   }
 
   &__text {
-    font-size: 14px;
-    color: #666;
+    @include text-style-small($text-color: var(--text-primary-color));
   }
 
   &__value {
-    font-size: 14px;
-    font-weight: 600;
+    @include text-style-small($text-color: var(--text-primary-color));
   }
+}
+
+.ant-table-wrapper
+  .ant-table-container
+  table
+  > thead
+  > tr:first-child
+  > *:last-child {
+  border-start-end-radius: 0px;
+}
+.ant-table-wrapper
+  .ant-table-container
+  table
+  > thead
+  > tr:first-child
+  > *:first-child {
+  border-start-start-radius: 0px;
 }

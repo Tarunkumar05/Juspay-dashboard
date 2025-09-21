@@ -2,11 +2,7 @@
 import React from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { Layout, Dropdown, Typography, Input } from "antd";
-import {
-  SearchOutlined,
-  BugOutlined,
-  UserOutlined,
-} from "@ant-design/icons";
+import { SearchOutlined, BugOutlined, UserOutlined } from "@ant-design/icons";
 import CustomIcons from "../CustomIcons/CustomIcons";
 import { useTheme } from "../../contexts/ThemeContext";
 import "./Navbar.scss";
@@ -23,8 +19,6 @@ interface NavBarProps {
 }
 
 const Navbar: React.FC<NavBarProps> = ({
-  leftCollapsed,
-  rightCollapsed,
   onRightToggle,
   onLeftToggle,
 }) => {
@@ -50,17 +44,23 @@ const Navbar: React.FC<NavBarProps> = ({
       {
         key: "1",
         label: "You have a bug that needs...",
-        icon: <BugOutlined className="notification-icon notification-icon--danger" />,
+        icon: (
+          <BugOutlined className="notification-icon notification-icon--danger" />
+        ),
       },
       {
         key: "2",
         label: "New user registered",
-        icon: <UserOutlined className="notification-icon notification-icon--success" />,
+        icon: (
+          <UserOutlined className="notification-icon notification-icon--success" />
+        ),
       },
       {
         key: "3",
         label: "Andi Lane subscribed to you",
-        icon: <UserOutlined className="notification-icon notification-icon--primary" />,
+        icon: (
+          <UserOutlined className="notification-icon notification-icon--primary" />
+        ),
       },
     ],
   };
@@ -74,15 +74,29 @@ const Navbar: React.FC<NavBarProps> = ({
   };
 
   return (
-    <Header className={`navbar ${theme === "dark" ? "navbar--dark" : "navbar--light"}`}>
+    <Header
+      className={`navbar ${
+        theme === "dark" ? "navbar--dark" : "navbar--light"
+      }`}
+    >
       <div className="navbar__left">
-        <CustomIcons.Toggle
-          width={24}
-          height={24}
-          className="navbar__icon navbar__icon--toggle"
-          onClick={onLeftToggle}
-        />
-        {theme === "dark" ? <CustomIcons.LightStar/> : <CustomIcons.DarkStar/>}
+        {theme === "dark" ? (
+          <CustomIcons.DarkToggle
+            className="navbar__icon navbar__icon--toggle"
+            onClick={onLeftToggle}
+          />
+        ) : (
+          <CustomIcons.Toggle
+            className="navbar__icon navbar__icon--toggle"
+            onClick={onLeftToggle}
+          />
+        )}
+
+        {theme === "dark" ? (
+          <CustomIcons.LightStar />
+        ) : (
+          <CustomIcons.DarkStar />
+        )}
 
         <Title level={4} className="navbar__title">
           {getPageTitle()}
@@ -115,15 +129,11 @@ const Navbar: React.FC<NavBarProps> = ({
 
         {theme === "dark" ? (
           <CustomIcons.LightClock
-            width={24}
-            height={24}
             className="navbar__icon navbar__icon--clock"
             onClick={handleClockClick}
           />
         ) : (
           <CustomIcons.Clock
-            width={24}
-            height={24}
             className="navbar__icon navbar__icon--clock"
             onClick={handleClockClick}
           />
@@ -131,26 +141,23 @@ const Navbar: React.FC<NavBarProps> = ({
 
         <Dropdown menu={notificationMenu} placement="bottomRight">
           {theme === "dark" ? (
-            <CustomIcons.LightNotification
-              width={24}
-              height={24}
-              className="navbar__icon navbar__icon--notification"
-            />
+            <CustomIcons.LightNotification className="navbar__icon navbar__icon--notification" />
           ) : (
-            <CustomIcons.Notification
-              width={24}
-              height={24}
-              className="navbar__icon navbar__icon--notification"
-            />
+            <CustomIcons.Notification className="navbar__icon navbar__icon--notification" />
           )}
         </Dropdown>
 
-        <CustomIcons.Toggle
-          width={24}
-          height={24}
-          className="navbar__icon navbar__icon--toggle"
-          onClick={onRightToggle}
-        />
+        {theme === "dark" ? (
+          <CustomIcons.DarkToggle
+              className="navbar__icon navbar__icon--toggle"
+            onClick={onRightToggle}
+          />
+        ) : (
+          <CustomIcons.Toggle
+              className="navbar__icon navbar__icon--toggle"
+            onClick={onRightToggle}
+          />
+        )}
       </div>
     </Header>
   );

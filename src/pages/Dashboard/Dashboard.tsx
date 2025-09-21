@@ -57,7 +57,7 @@ const data = {
     {
       label: "Actuals",
       data: [18, 24, 20, 25, 16, 24],
-      backgroundColor: "rgba(70, 130, 180, 0.9)", // Darker blue
+      backgroundColor: "rgba(70, 130, 180, 0.9)", 
       borderRadius: 4,
       barThickness: 20,
     },
@@ -119,10 +119,10 @@ const doughnutData = {
     {
       data: [300.56, 135.18, 154.02, 48.96],
       backgroundColor: [
-        "#2F2F2F", // Dark gray/black for Direct
-        "#90EE90", // Light green for Affiliate
-        "#9370DB", // Light purple for Sponsored
-        "#87CEEB", // Light blue for E-mail
+        "#2F2F2F", 
+        "#90EE90", 
+        "#9370DB", 
+        "#87CEEB", 
       ],
       borderWidth: 0,
       spacing: 6, // Space between segments
@@ -276,11 +276,16 @@ const Dashboard = () => {
 
       {/* Charts Row */}
       <Row gutter={[16, 16]} className="dashboard__charts-row">
-        <Col xs={24} lg={16}>
-          <Card title="Revenue">
+        <Col xs={24} lg={16} flex="70%">
+          <Card >
             <div className="revenue-chart">
               {/* Revenue Header */}
               <div className="revenue-chart__header">
+                <div className="legend-item">
+                  <span className="legend-item__title">
+                   Revenue
+                  </span>
+                </div>
                 <div className="legend-item">
                   <div className="legend-item__dot legend-item__dot--current" />
                   <span className="legend-item__text">
@@ -397,7 +402,7 @@ const Dashboard = () => {
             </div>
           </Card>
         </Col>
-        <Col xs={24} lg={8}>
+        <Col xs={24} lg={8} flex="30%">
           <Card title="Revenue by Location">
             <div className="location-revenue">
               <div className="location-revenue__item">
@@ -439,8 +444,8 @@ const Dashboard = () => {
 
       {/* Bottom Row */}
       <Row gutter={[16, 16]}>
-        <Col flex="60%">
-          <Card title="Top Selling Products">
+        <Col flex="70%">
+          <Card title="Top Selling Products" className="top-product">
             <Table
               dataSource={revenueData}
               columns={columns}
@@ -451,12 +456,12 @@ const Dashboard = () => {
             />
           </Card>
         </Col>
-        <Col flex="40%">
-          <Card title="Total Sales">
-            <div className="sales-chart">
+        <Col flex="30%">
+          <Card title="Total Sales" className="total-sale">
+            <div className="total-sale_chart">
               {/* Chart Container */}
-              <div className="sales-chart__container">
-                <Doughnut data={doughnutData} options={doughnutOptions} />
+              <div className="total-sale_chart_container">
+                <Doughnut data={doughnutData} options={doughnutOptions}/>
               </div>
 
               {/* Legend */}

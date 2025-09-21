@@ -5,7 +5,10 @@
   justify-content: space-between;
   z-index: 1000;
   background: var(--bg-primary-color);
-  border-bottom: 1px solid var(  --border-color);
+  border-bottom: 1px solid var(--border-color);
+  position: sticky;
+  top: 0;
+  z-index: 10;
 
   &__left {
     display: flex;
@@ -29,6 +32,41 @@
 
   &__search {
     width: 200px;
+    .ant-input-group-addon {
+      display: none !important;
+    }
+    .ant-input-group .ant-input-affix-wrapper:not(:last-child) {
+      border-radius: 8px;
+    }
+
+    .ant-input-affix-wrapper {
+      background-color: var(--bg-secondary-color) !important;
+      border-color: var(--border-color) !important;
+
+      .ant-input {
+        background-color: transparent !important;
+        color: var(--color-text-primary) !important;
+
+        &::placeholder {
+          color: var(--color-text-secondary) !important;
+        }
+      }
+
+      .ant-input-prefix {
+        color: var(--color-text-secondary) !important;
+      }
+
+      &:hover {
+        background-color: var(--bg-tertiary-color) !important;
+        border-color: var(--border-hover-color) !important;
+      }
+
+      &:focus-within {
+        background-color: var(--bg-secondary-color) !important;
+        border-color: var(--primary-color) !important;
+        box-shadow: 0 0 0 2px var(--primary-color-light) !important;
+      }
+    }
   }
 
   &__icon {
@@ -50,20 +88,5 @@
         opacity: 0.8;
       }
     }
-  }
-}
-
-// Notification dropdown icon styles
-.notification-icon {
-  &--danger {
-    color: #ff4d4f;
-  }
-
-  &--success {
-    color: #52c41a;
-  }
-
-  &--primary {
-    color: #1890ff;
   }
 }

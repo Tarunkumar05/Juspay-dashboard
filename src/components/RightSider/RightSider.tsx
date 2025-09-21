@@ -94,7 +94,7 @@ const RightSider: React.FC<RightSiderProps> = ({ collapsed }) => {
       collapsible
       collapsed={collapsed}
       reverseArrow
-      width={320}
+      width={280}
       collapsedWidth={0}
       className="right-sider"
     >

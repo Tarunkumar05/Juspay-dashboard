@@ -15,29 +15,6 @@
   flex-direction: column;
 }
 
-// Card mixins
-@mixin card {
-  background-color: var(--color-bg-elevated);
-  border: 1px solid var(--color-border-secondary);
-  border-radius: var(--border-radius-lg);
-  box-shadow: var(--shadow-sm);
-  transition: box-shadow var(--transition-normal);
-  
-  &:hover {
-    box-shadow: var(--shadow-md);
-  }
-}
-
-@mixin card-padding($size: 'md') {
-  @if $size == 'sm' {
-    padding: calc(var(--base-unit) * 3);
-  } @else if $size == 'md' {
-    padding: calc(var(--base-unit) * 4);
-  } @else if $size == 'lg' {
-    padding: calc(var(--base-unit) * 6);
-  }
-}
-
 // Button mixins
 @mixin button-base {
   display: inline-flex;
@@ -50,45 +27,28 @@
   font-family: var(--font-family-primary);
   font-weight: var(--font-weight-medium);
   text-decoration: none;
-  
+
   &:disabled {
     opacity: 0.5;
     cursor: not-allowed;
   }
 }
 
-@mixin button-primary {
-  @include button-base;
-  background-color: var(--color-primary);
-  color: var(--color-text-inverse);
-  
-  &:hover:not(:disabled) {
-    background-color: var(--color-primary-hover);
-  }
-  
-  &:active:not(:disabled) {
-    background-color: var(--color-primary-active);
-  }
-}
-
 // Scrollbar styling
 @mixin custom-scrollbar {
   &::-webkit-scrollbar {
-    width: 6px;
-    height: 6px;
+    width: 3px;
+    height: 100%;
   }
-  
+
   &::-webkit-scrollbar-track {
     background: var(--color-bg-secondary);
     border-radius: var(--border-radius-sm);
   }
-  
+
   &::-webkit-scrollbar-thumb {
-    background: var(--color-border-primary);
+    background: var(--border-color);
+
     border-radius: var(--border-radius-sm);
-    
-    &:hover {
-      background: var(--color-text-quaternary);
-    }
   }
 }

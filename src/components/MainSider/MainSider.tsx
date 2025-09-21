@@ -1,13 +1,14 @@
 import Sider from "antd/es/layout/Sider";
-import { DashboardOutlined, ProjectOutlined } from "@ant-design/icons";
 
 import { Dropdown, Menu, Typography } from "antd";
 import React from "react";
 import "./MainSider.scss";
 import CustomIcons from "../CustomIcons/CustomIcons";
 import "../../styles/themes/_light.scss";
+import { useTheme } from "../../contexts/ThemeContext";
 
 const { Text } = Typography;
+
 
 interface MainSiderProps {
   collapsed: boolean;
@@ -25,33 +26,68 @@ const favoritesItems = [
 ];
 
 
-const dashboardItems = [
-  {
-    key: "default",
-    icon: <CustomIcons.Default width={20} height={20} />,
-    label: "Default",
-  },
-  {
-    key: "ecommerce",
-    icon: <CustomIcons.ShoppingBag width={20} height={20} />,
-    label: "eCommerce",
-  },
-  {
-    key: "projects-dashboard",
-    icon: <CustomIcons.Projects width={20} height={20} />,
-    label: "Projects",
-  },
-  {
-    key: "online-courses",
-    icon: <CustomIcons.BookOpen width={20} height={20} />,
-    label: "Online Courses",
-  },
-];
 
-const pagesItems = [
+// Combine all menu items for collapsed state
+
+
+const MainSider: React.FC<MainSiderProps> = ({ collapsed }) => {
+
+  const { theme } = useTheme();
+  const userMenu = {
+    items: [
+      { key: "1", label: "Profile" },
+      { key: "2", label: "Settings" },
+      { key: "3", label: "Logout" },
+    ],
+  };
+
+  const dashboardItems = [
+    {
+      key: "default",
+      icon:
+        theme === "dark" ? (
+          <CustomIcons.DarkDefault />
+        ) : (
+          <CustomIcons.Default />
+        ),
+      label: "Default",
+    },
+    {
+      key: "ecommerce",
+      icon:
+        theme === "dark" ? (
+          <CustomIcons.DarkShoppingBag />
+        ) : (
+          <CustomIcons.ShoppingBag />
+        ),
+      label: "eCommerce",
+    },
+    {
+      key: "projects-dashboard",
+      icon:
+        theme === "dark" ? (
+          <CustomIcons.DarkProjects />
+        ) : (
+          <CustomIcons.Projects />
+        ),
+      label: "Projects",
+    },
+    {
+      key: "online-courses",
+      icon:
+        theme === "dark" ? (
+          <CustomIcons.DarkBookOpen />
+        ) : (
+          <CustomIcons.BookOpen />
+        ),
+      label: "Online Courses",
+    },
+  ];
+
+  const pagesItems = [
   {
     key: "user-profile",
-    icon: <CustomIcons.UserProfile width={20} height={20} />,
+    icon: theme === "dark" ? <CustomIcons.DarkUserProfile /> : <CustomIcons.UserProfile />, 
     label: "User Profile",
     children: [
       { key: "profile-overview", label: "Overview" },
@@ -63,7 +99,7 @@ const pagesItems = [
   },
   {
     key: "account",
-    icon: <CustomIcons.Account width={20} height={20} />,
+    icon: theme === "dark" ? <CustomIcons.DarkAcoount /> : <CustomIcons.Account />,
     label: "Account",
     children: [
       { key: "Account-option-1", label: "Account-1" },
@@ -72,7 +108,7 @@ const pagesItems = [
   },
   {
     key: "corporate",
-    icon: <CustomIcons.Corporate width={20} height={20} />,
+    icon: theme === "dark" ? <CustomIcons.DarkCorporate /> : <CustomIcons.Corporate />,
     label: "Corporate",
     children: [
       { key: "Corporate-option-1", label: "Corporate-1" },
@@ -81,7 +117,7 @@ const pagesItems = [
   },
   {
     key: "blog",
-    icon: <CustomIcons.Blog width={20} height={20} />,
+    icon: theme === "dark" ? <CustomIcons.DarkBlog /> : <CustomIcons.Blog />,
     label: "Blog",
     children: [
       { key: "Blog-option-1", label: "Blog-1" },
@@ -90,7 +126,7 @@ const pagesItems = [
   },
   {
     key: "social",
-    icon: <CustomIcons.Social width={20} height={20} />,
+    icon: theme === "dark" ? <CustomIcons.DarkSocial /> : <CustomIcons.Social />,
     label: "Social",
     children: [
       { key: "Social-option-1", label: "Social-1" },
@@ -99,17 +135,8 @@ const pagesItems = [
   },
 ];
 
-// Combine all menu items for collapsed state
-const allMenuItems = [...favoritesItems, ...dashboardItems, ...pagesItems];
 
-const MainSider: React.FC<MainSiderProps> = ({ collapsed }) => {
-  const userMenu = {
-    items: [
-      { key: "1", label: "Profile" },
-      { key: "2", label: "Settings" },
-      { key: "3", label: "Logout" },
-    ],
-  };
+  const allMenuItems = [...favoritesItems, ...dashboardItems, ...pagesItems];
   return (
     <Sider
       trigger={null}
@@ -122,7 +149,7 @@ const MainSider: React.FC<MainSiderProps> = ({ collapsed }) => {
       <div className="main-sider__header">
         <div className="main-sider__avatar">
           <Dropdown menu={userMenu} placement="bottomRight">
-            <CustomIcons.Profile width={20} height={20} />
+            <CustomIcons.Profile />
           </Dropdown>
         </div>
         {!collapsed && (
@@ -158,14 +185,13 @@ const MainSider: React.FC<MainSiderProps> = ({ collapsed }) => {
               />
             </div>
 
-
             <div className="main-sider__section">
               <div className="main-sider__section-title">
                 <Text type="secondary">Dashboards</Text>
               </div>
               <Menu
                 mode="inline"
-                defaultSelectedKeys={["default"]}
+                // defaultSelectedKeys={["default"]}
                 items={dashboardItems}
                 className="main-sider__menu"
               />

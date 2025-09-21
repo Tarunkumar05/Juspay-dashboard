@@ -10,9 +10,11 @@ import {
   Typography,
   Pagination,
   Select,
-  DatePicker,
   Dropdown,
   Menu,
+  Modal,
+  Form,
+  message,
 } from "antd";
 import {
   PlusOutlined,
@@ -149,7 +151,7 @@ const generateOrderData = (): OrderData[] => {
 const OrderList: React.FC = () => {
   const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const [pageSize] = useState(10); // Changed to 10 rows per page
+  const [pageSize] = useState(10);
   const [filters, setFilters] = useState<FilterState>({
     status: [],
     dateRange: "all",
@@ -159,8 +161,11 @@ const OrderList: React.FC = () => {
     field: "timestamp",
     order: "desc",
   });
-
-  const orderData: OrderData[] = generateOrderData();
+  
+  // New state for add functionality
+  const [isAddModalVisible, setIsAddModalVisible] = useState(false);
+  const [orderData, setOrderData] = useState<OrderData[]>(generateOrderData());
+  const [form] = Form.useForm();
 
   const getStatusColor = (status: string) => {
     switch (status) {
@@ -177,6 +182,56 @@ const OrderList: React.FC = () => {
       default:
         return "#6b7280";
     }
+  };
+
+  // Generate unique order ID
+  const generateOrderId = () => {
+    const maxId = Math.max(
+      ...orderData.map(order => parseInt(order.orderId.replace("#CM98", "")))
+    );
+    return `#CM98${String(maxId + 1).padStart(2, "0")}`;
+  };
+
+  // Generate avatar URL from name
+  const generateAvatarUrl = (name: string) => {
+    const seed = name.toLowerCase().replace(/\s+/g, '');
+    return `https://api.dicebear.com/7.x/miniavs/svg?seed=${seed}`;
+  };
+
+  // Handle adding new order
+  const handleAddOrder = async () => {
+    try {
+      const values = await form.validateFields();
+      const newOrder: OrderData = {
+        key: (orderData.length + 1).toString(),
+        orderId: generateOrderId(),
+        user: {
+          name: values.userName,
+          avatar: generateAvatarUrl(values.userName),
+        },
+        project: values.project,
+        address: values.address,
+        date: "Just now",
+        timestamp: Date.now(),
+        status: values.status,
+      };
+
+      setOrderData([newOrder, ...orderData]);
+      setIsAddModalVisible(false);
+      form.resetFields();
+      message.success("Order added successfully!");
+      
+      // Reset to first page to show the new order
+      setCurrentPage(1);
+    } catch (error) {
+      console.error("Validation failed:", error);
+    }
+  };
+
+  // Handle modal cancel
+  const handleModalCancel = () => {
+    setIsAddModalVisible(false);
+    form.resetFields();
   };
 
   // Filter and sort data
@@ -311,7 +366,7 @@ const OrderList: React.FC = () => {
       title: "",
       key: "actions",
       width: 50,
-      render: (_: any, record: OrderData) => (
+      render: (_: any) => (
         <Dropdown
           overlay={
             <Menu>
@@ -405,12 +460,17 @@ const OrderList: React.FC = () => {
       {/* Action Bar */}
       <div className="action-bar">
         <div className="action-buttons">
-          <Button type="primary" icon={<PlusOutlined />} className="add-button"/>
+          <Button 
+            type="primary" 
+            icon={<PlusOutlined />} 
+            className="add-button"
+            onClick={() => setIsAddModalVisible(true)}
+          />
          
           <Dropdown overlay={filterMenu} trigger={["click"]}>
             <Button icon={<FilterOutlined />} className="filter-button"/>
-
           </Dropdown>
+          
           <Dropdown overlay={sortMenu} trigger={["click"]}>
             <Button icon={<SortAscendingOutlined />} className="sort-button"/>
           </Dropdown>
@@ -453,6 +513,63 @@ const OrderList: React.FC = () => {
           className="pagination"
         />
       </div>
+
+      {/* Add Order Modal */}
+      <Modal
+        title="Add New Order"
+        open={isAddModalVisible}
+        onOk={handleAddOrder}
+        onCancel={handleModalCancel}
+        okText="Add Order"
+        cancelText="Cancel"
+        width={500}
+        className="add-order-modal"
+      >
+        <Form
+          form={form}
+          layout="vertical"
+          requiredMark={false}
+          className="add-order-form"
+        >
+          <Form.Item
+            name="userName"
+            label="User Name"
+            rules={[{ required: true, message: "Please enter user name" }]}
+          >
+            <Input placeholder="Enter user name" />
+          </Form.Item>
+
+          <Form.Item
+            name="project"
+            label="Project"
+            rules={[{ required: true, message: "Please enter project name" }]}
+          >
+            <Input placeholder="Enter project name" />
+          </Form.Item>
+
+          <Form.Item
+            name="address"
+            label="Address"
+            rules={[{ required: true, message: "Please enter address" }]}
+          >
+            <Input placeholder="Enter address" />
+          </Form.Item>
+
+          <Form.Item
+            name="status"
+            label="Status"
+            rules={[{ required: true, message: "Please select status" }]}
+          >
+            <Select placeholder="Select status">
+              <Option value="In Progress">In Progress</Option>
+              <Option value="Complete">Complete</Option>
+              <Option value="Pending">Pending</Option>
+              <Option value="Approved">Approved</Option>
+              <Option value="Rejected">Rejected</Option>
+            </Select>
+          </Form.Item>
+        </Form>
+      </Modal>
     </div>
   );
 };
