@@ -27,7 +27,7 @@ import DarkStarIcon from '../../assets/icons/dark-star.svg?react';
 import DarkDefaultIcon from '../../assets/icons/dark-default.svg?react';
 import DarkShoppingBagIcon from '../../assets/icons/dark-shopping-bag.svg?react';
 import DarkProjectsIcon from '../../assets/icons/dark-project.svg?react';
-import DarkBookOpenIcon from '../../assets/icons/dark-user-profile.svg?react';
+import DarkBookOpenIcon from '../../assets/icons/dark-book-open.svg?react';
 import DarkUserProfileIcon from '../../assets/icons/dark-user-profile.svg?react';
 import DarkCorporateIcon from '../../assets/icons/dark-corporate.svg?react';
 import DarkAcoountIcon from '../../assets/icons/dark-account.svg?react';
