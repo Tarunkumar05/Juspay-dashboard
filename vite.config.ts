@@ -33,32 +33,20 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import svgr from 'vite-plugin-svgr'
-import path from 'path'
 
 export default defineConfig({
   plugins: [
-    react(), 
+    react(),
     svgr({
+      exportType: 'default',
       svgrOptions: {
         exportType: 'default',
       },
-      include: '**/*.svg?react',
-    })
+    }),
   ],
-  resolve: {
-    alias: {
-      '@': path.resolve(__dirname, './src'),
+  build: {
+    rollupOptions: {
+      external: [],
     },
   },
-  css: {
-    preprocessorOptions: {
-      scss: {
-        additionalData: `
-          @import "${path.resolve(__dirname, './src/styles/globals/variables.scss')}";
-          @import "${path.resolve(__dirname, './src/styles/globals/mixin.scss')}";
-          @import "${path.resolve(__dirname, './src/styles/globals/typography.scss')}";
-        `
-      }
-    }
-  }
 })
