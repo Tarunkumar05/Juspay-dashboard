@@ -5,7 +5,7 @@
 // import ToggleIcon from '../../assets/icons/toggle.svg?react';
 // import ProfileIcon from '../../assets/icons/profile.svg?react';
 // import DefaultIcon from '../../assets/icons/defaultIcon.svg?react';
-// import ShoppingBagIcon from '../../assets/icons/shopping-bag-open.svg.svg?react';
+// import ShoppingBagIcon from '../../assets/icons/shopping-bag-open.svg?react';
 // import ProjectsIcon from '../../assets/icons/projects.svg?react';
 // import BookOpenIcon from '../../assets/icons/book-open.svg?react';
 // import UserProfileIcon from '../../assets/icons/user-profile.svg?react';
